@@ -1,0 +1,8 @@
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# OpenAPI generator
+/.openapi-generator/
+.travis.yml
+git_push.sh
