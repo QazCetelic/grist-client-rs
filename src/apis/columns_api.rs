@@ -41,12 +41,11 @@ pub enum ReplaceColumnsError {
 
 
 pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, create_columns: models::CreateColumns) -> Result<models::ColumnsWithoutFields, Error<AddColumnsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_create_columns = create_columns;
-
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/columns", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), tableId=crate::apis::urlencode(p_table_id));
+    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id),
+        tableId = crate::apis::urlencode(table_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -55,7 +54,7 @@ pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_create_columns);
+    req_builder = req_builder.json(&create_columns);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -72,8 +71,8 @@ pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ColumnsWithoutFields`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ColumnsWithoutFields`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ColumnsWithoutFields`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ColumnsWithoutFields`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -83,12 +82,12 @@ pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &
 }
 
 pub async fn delete_column(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, col_id: &str) -> Result<(), Error<DeleteColumnError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_col_id = col_id;
-
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/columns/{colId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), tableId=crate::apis::urlencode(p_table_id), colId=crate::apis::urlencode(p_col_id));
+    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns/{colId}",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id),
+        tableId = crate::apis::urlencode(table_id),
+        colId = crate::apis::urlencode(col_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -113,15 +112,14 @@ pub async fn delete_column(configuration: &configuration::Configuration, doc_id:
 }
 
 pub async fn list_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, hidden: Option<bool>) -> Result<models::ColumnsList, Error<ListColumnsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_hidden = hidden;
-
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/columns", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), tableId=crate::apis::urlencode(p_table_id));
+    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id),
+        tableId = crate::apis::urlencode(table_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_hidden {
+    if let Some(ref param_value) = hidden {
         req_builder = req_builder.query(&[("hidden", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -146,8 +144,8 @@ pub async fn list_columns(configuration: &configuration::Configuration, doc_id: 
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ColumnsList`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ColumnsList`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ColumnsList`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ColumnsList`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -157,12 +155,11 @@ pub async fn list_columns(configuration: &configuration::Configuration, doc_id: 
 }
 
 pub async fn modify_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, update_columns: models::UpdateColumns) -> Result<(), Error<ModifyColumnsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_update_columns = update_columns;
-
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/columns", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), tableId=crate::apis::urlencode(p_table_id));
+    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id),
+        tableId = crate::apis::urlencode(table_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -171,7 +168,7 @@ pub async fn modify_columns(configuration: &configuration::Configuration, doc_id
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_update_columns);
+    req_builder = req_builder.json(&update_columns);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -188,24 +185,20 @@ pub async fn modify_columns(configuration: &configuration::Configuration, doc_id
 }
 
 pub async fn replace_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, update_columns: models::UpdateColumns, noadd: Option<bool>, noupdate: Option<bool>, replaceall: Option<bool>) -> Result<(), Error<ReplaceColumnsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_update_columns = update_columns;
-    let p_noadd = noadd;
-    let p_noupdate = noupdate;
-    let p_replaceall = replaceall;
-
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/columns", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), tableId=crate::apis::urlencode(p_table_id));
+    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id),
+        tableId = crate::apis::urlencode(table_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
 
-    if let Some(ref param_value) = p_noadd {
+    if let Some(ref param_value) = noadd {
         req_builder = req_builder.query(&[("noadd", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_noupdate {
+    if let Some(ref param_value) = noupdate {
         req_builder = req_builder.query(&[("noupdate", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_replaceall {
+    if let Some(ref param_value) = replaceall {
         req_builder = req_builder.query(&[("replaceall", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -214,7 +207,7 @@ pub async fn replace_columns(configuration: &configuration::Configuration, doc_i
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_update_columns);
+    req_builder = req_builder.json(&update_columns);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

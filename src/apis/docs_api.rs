@@ -97,11 +97,10 @@ pub enum MoveDocError {
 
 
 pub async fn create_doc(configuration: &configuration::Configuration, workspace_id: i32, doc_parameters: models::DocParameters) -> Result<String, Error<CreateDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_workspace_id = workspace_id;
-    let p_doc_parameters = doc_parameters;
-
-    let uri_str = format!("{}/workspaces/{workspaceId}/docs", configuration.base_path, workspaceId=p_workspace_id);
+    let uri_str = format!("{config}/workspaces/{workspaceId}/docs",
+        config = configuration.base_path,
+        workspaceId = workspace_id
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -110,7 +109,7 @@ pub async fn create_doc(configuration: &configuration::Configuration, workspace_
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_doc_parameters);
+    req_builder = req_builder.json(&doc_parameters);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -127,8 +126,8 @@ pub async fn create_doc(configuration: &configuration::Configuration, workspace_
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `String`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `String`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `String`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `String`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -138,11 +137,10 @@ pub async fn create_doc(configuration: &configuration::Configuration, workspace_
 }
 
 pub async fn delete_actions(configuration: &configuration::Configuration, doc_id: &str, delete_actions_request: Option<models::DeleteActionsRequest>) -> Result<(), Error<DeleteActionsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_delete_actions_request = delete_actions_request;
-
-    let uri_str = format!("{}/docs/{docId}/states/remove", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/states/remove",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -151,7 +149,7 @@ pub async fn delete_actions(configuration: &configuration::Configuration, doc_id
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_delete_actions_request);
+    req_builder = req_builder.json(&delete_actions_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -168,10 +166,10 @@ pub async fn delete_actions(configuration: &configuration::Configuration, doc_id
 }
 
 pub async fn delete_doc(configuration: &configuration::Configuration, doc_id: &str) -> Result<(), Error<DeleteDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -196,10 +194,10 @@ pub async fn delete_doc(configuration: &configuration::Configuration, doc_id: &s
 }
 
 pub async fn describe_doc(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocWithWorkspace, Error<DescribeDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -224,8 +222,8 @@ pub async fn describe_doc(configuration: &configuration::Configuration, doc_id: 
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocWithWorkspace`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocWithWorkspace`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocWithWorkspace`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocWithWorkspace`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -235,18 +233,16 @@ pub async fn describe_doc(configuration: &configuration::Configuration, doc_id: 
 }
 
 pub async fn download_doc(configuration: &configuration::Configuration, doc_id: &str, nohistory: Option<bool>, template: Option<bool>) -> Result<reqwest::Response, Error<DownloadDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_nohistory = nohistory;
-    let p_template = template;
-
-    let uri_str = format!("{}/docs/{docId}/download", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/download",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_nohistory {
+    if let Some(ref param_value) = nohistory {
         req_builder = req_builder.query(&[("nohistory", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_template {
+    if let Some(ref param_value) = template {
         req_builder = req_builder.query(&[("template", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -271,16 +267,14 @@ pub async fn download_doc(configuration: &configuration::Configuration, doc_id: 
 }
 
 pub async fn download_doc_csv(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, header: Option<&str>) -> Result<String, Error<DownloadDocCsvError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_header = header;
-
-    let uri_str = format!("{}/docs/{docId}/download/csv", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/download/csv",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("tableId", &p_table_id.to_string())]);
-    if let Some(ref param_value) = p_header {
+    req_builder = req_builder.query(&[("tableId", &table_id.to_string())]);
+    if let Some(ref param_value) = header {
         req_builder = req_builder.query(&[("header", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -305,8 +299,8 @@ pub async fn download_doc_csv(configuration: &configuration::Configuration, doc_
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `String`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `String`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `String`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `String`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -316,14 +310,13 @@ pub async fn download_doc_csv(configuration: &configuration::Configuration, doc_
 }
 
 pub async fn download_doc_xlsx(configuration: &configuration::Configuration, doc_id: &str, header: Option<&str>) -> Result<reqwest::Response, Error<DownloadDocXlsxError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_header = header;
-
-    let uri_str = format!("{}/docs/{docId}/download/xlsx", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/download/xlsx",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_header {
+    if let Some(ref param_value) = header {
         req_builder = req_builder.query(&[("header", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -349,16 +342,14 @@ pub async fn download_doc_xlsx(configuration: &configuration::Configuration, doc
 
 /// The schema follows [frictionlessdata's table-schema standard](https://specs.frictionlessdata.io/table-schema/).
 pub async fn download_table_schema(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, header: Option<&str>) -> Result<models::TableSchemaResult, Error<DownloadTableSchemaError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_table_id = table_id;
-    let p_header = header;
-
-    let uri_str = format!("{}/docs/{docId}/download/table-schema", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/download/table-schema",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    req_builder = req_builder.query(&[("tableId", &p_table_id.to_string())]);
-    if let Some(ref param_value) = p_header {
+    req_builder = req_builder.query(&[("tableId", &table_id.to_string())]);
+    if let Some(ref param_value) = header {
         req_builder = req_builder.query(&[("header", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -395,10 +386,10 @@ pub async fn download_table_schema(configuration: &configuration::Configuration,
 
 /// Closes and reopens the document, forcing the python engine to restart.
 pub async fn force_reload(configuration: &configuration::Configuration, doc_id: &str) -> Result<(), Error<ForceReloadError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/force-reload", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/force-reload",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -423,10 +414,10 @@ pub async fn force_reload(configuration: &configuration::Configuration, doc_id: 
 }
 
 pub async fn list_doc_access(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::WorkspaceAccessRead, Error<ListDocAccessError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/access", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/access",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -462,11 +453,10 @@ pub async fn list_doc_access(configuration: &configuration::Configuration, doc_i
 }
 
 pub async fn modify_doc(configuration: &configuration::Configuration, doc_id: &str, doc_parameters: models::DocParameters) -> Result<(), Error<ModifyDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_doc_parameters = doc_parameters;
-
-    let uri_str = format!("{}/docs/{docId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -475,7 +465,7 @@ pub async fn modify_doc(configuration: &configuration::Configuration, doc_id: &s
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_doc_parameters);
+    req_builder = req_builder.json(&doc_parameters);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -492,11 +482,10 @@ pub async fn modify_doc(configuration: &configuration::Configuration, doc_id: &s
 }
 
 pub async fn modify_doc_access(configuration: &configuration::Configuration, doc_id: &str, modify_doc_access_request: models::ModifyDocAccessRequest) -> Result<(), Error<ModifyDocAccessError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_modify_doc_access_request = modify_doc_access_request;
-
-    let uri_str = format!("{}/docs/{docId}/access", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/access",
+        config = configuration.base_path,
+        docId=crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -505,7 +494,7 @@ pub async fn modify_doc_access(configuration: &configuration::Configuration, doc
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_modify_doc_access_request);
+    req_builder = req_builder.json(&modify_doc_access_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -522,11 +511,10 @@ pub async fn modify_doc_access(configuration: &configuration::Configuration, doc
 }
 
 pub async fn move_doc(configuration: &configuration::Configuration, doc_id: &str, move_doc_request: Option<models::MoveDocRequest>) -> Result<(), Error<MoveDocError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_move_doc_request = move_doc_request;
-
-    let uri_str = format!("{}/docs/{docId}/move", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/move",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -535,7 +523,7 @@ pub async fn move_doc(configuration: &configuration::Configuration, doc_id: &str
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_move_doc_request);
+    req_builder = req_builder.json(&move_doc_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

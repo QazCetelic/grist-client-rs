@@ -82,14 +82,11 @@ pub enum UploadMissingAttachmentsError {
 }
 
 pub async fn download_attachment(configuration: &configuration::Configuration, doc_id: &str, attachment_id: u64) -> Result<Vec<u8>, Error<DownloadAttachmentError>> {
-    // Add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_attachment_id = attachment_id;
-
     // Construct the URI string for the request
-    let uri_str = format!("{}/docs/{docId}/attachments/{attachmentId}/download", configuration.base_path,
-                          docId = crate::apis::urlencode(p_doc_id),
-                          attachmentId = p_attachment_id
+    let uri_str = format!("{config}/docs/{docId}/attachments/{attachmentId}/download",
+        config = configuration.base_path, 
+        docId = crate::apis::urlencode(doc_id),
+        attachmentId = attachment_id
     );
 
     // Build the request
@@ -120,14 +117,13 @@ pub async fn download_attachment(configuration: &configuration::Configuration, d
 }
 
 pub async fn download_attachments(configuration: &configuration::Configuration, doc_id: &str, format: Option<&str>) -> Result<(), Error<DownloadAttachmentsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_format = format;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/archive", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments/archive",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_format {
+    if let Some(ref param_value) = format {
         req_builder = req_builder.query(&[("format", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
@@ -152,11 +148,11 @@ pub async fn download_attachments(configuration: &configuration::Configuration, 
 }
 
 pub async fn get_attachment_metadata(configuration: &configuration::Configuration, doc_id: &str, attachment_id: f64) -> Result<models::AttachmentMetadata, Error<GetAttachmentMetadataError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_attachment_id = attachment_id;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/{attachmentId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), attachmentId=p_attachment_id);
+    let uri_str = format!("{config}/docs/{docId}/attachments/{attachmentId}",
+        config = configuration.base_path,
+        docId=crate::apis::urlencode(doc_id),
+        attachmentId=attachment_id
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -192,10 +188,10 @@ pub async fn get_attachment_metadata(configuration: &configuration::Configuratio
 }
 
 pub async fn get_attachment_transfer_status(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::AttachmentsTransferStatus, Error<GetAttachmentTransferStatusError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/api/docs/{docId}/attachments/transferStatus", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/api/docs/{docId}/attachments/transferStatus",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -231,10 +227,10 @@ pub async fn get_attachment_transfer_status(configuration: &configuration::Confi
 }
 
 pub async fn get_document_attachment_store(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocumentStoreSetting, Error<GetDocumentAttachmentStoreError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/store", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments/store",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -270,10 +266,10 @@ pub async fn get_document_attachment_store(configuration: &configuration::Config
 }
 
 pub async fn list_attachment_stores(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocumentStoreSetting, Error<ListAttachmentStoresError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/stores", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments/stores",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -309,33 +305,28 @@ pub async fn list_attachment_stores(configuration: &configuration::Configuration
 }
 
 pub async fn list_attachments(configuration: &configuration::Configuration, doc_id: &str, filter: Option<&str>, sort: Option<&str>, limit: Option<f64>, x_sort: Option<&str>, x_limit: Option<f64>) -> Result<models::AttachmentMetadataList, Error<ListAttachmentsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_filter = filter;
-    let p_sort = sort;
-    let p_limit = limit;
-    let p_x_sort = x_sort;
-    let p_x_limit = x_limit;
-
-    let uri_str = format!("{}/docs/{docId}/attachments", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    if let Some(ref param_value) = p_filter {
+    if let Some(ref param_value) = filter {
         req_builder = req_builder.query(&[("filter", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_sort {
+    if let Some(ref param_value) = sort {
         req_builder = req_builder.query(&[("sort", &param_value.to_string())]);
     }
-    if let Some(ref param_value) = p_limit {
+    if let Some(ref param_value) = limit {
         req_builder = req_builder.query(&[("limit", &param_value.to_string())]);
     }
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(param_value) = p_x_sort {
+    if let Some(param_value) = x_sort {
         req_builder = req_builder.header("X-Sort", param_value.to_string());
     }
-    if let Some(param_value) = p_x_limit {
+    if let Some(param_value) = x_limit {
         req_builder = req_builder.header("X-Limit", param_value.to_string());
     }
     if let Some(ref token) = configuration.bearer_access_token {
@@ -368,11 +359,10 @@ pub async fn list_attachments(configuration: &configuration::Configuration, doc_
 }
 
 pub async fn set_document_attachment_store(configuration: &configuration::Configuration, doc_id: &str, document_store_setting: Option<models::DocumentStoreSetting>) -> Result<models::SetDocumentAttachmentStore200Response, Error<SetDocumentAttachmentStoreError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_document_store_setting = document_store_setting;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/store", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments/store",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -381,7 +371,7 @@ pub async fn set_document_attachment_store(configuration: &configuration::Config
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_document_store_setting);
+    req_builder = req_builder.json(&document_store_setting);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -409,10 +399,10 @@ pub async fn set_document_attachment_store(configuration: &configuration::Config
 }
 
 pub async fn start_attachment_transfer(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::AttachmentsTransferStatus, Error<StartAttachmentTransferError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/api/docs/{docId}/attachments/transferAll", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/api/docs/{docId}/attachments/transferAll",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -448,13 +438,9 @@ pub async fn start_attachment_transfer(configuration: &configuration::Configurat
 }
 
 pub async fn upload_attachments(configuration: &configuration::Configuration, doc_id: &str, upload: Vec<std::path::PathBuf>) -> Result<Vec<u64>, Error<UploadAttachmentsError>> {
-    // Add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_upload = upload;
-
     let uri_str = format!("{base_path}/docs/{docId}/attachments",
         base_path = configuration.base_path,
-        docId = crate::apis::urlencode(p_doc_id)
+        docId = crate::apis::urlencode(doc_id)
     );
 
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -468,7 +454,7 @@ pub async fn upload_attachments(configuration: &configuration::Configuration, do
 
     let mut multipart_form = reqwest::multipart::Form::new();
 
-    for path in p_upload {
+    for path in upload {
         let file_name = path.file_name()
             .and_then(|os_str| os_str.to_str())
             .expect("Failed to get file name")
@@ -507,10 +493,10 @@ pub async fn upload_attachments(configuration: &configuration::Configuration, do
 
 /// Restores attachments which are missing from external storage.
 pub async fn upload_missing_attachments(configuration: &configuration::Configuration, doc_id: &str, file: Option<std::path::PathBuf>) -> Result<models::UploadMissingAttachments200Response, Error<UploadMissingAttachmentsError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/attachments/archive", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{config}/docs/{docId}/attachments/archive",
+        config = configuration.base_path,
+        docId = crate::apis::urlencode(doc_id)
+    );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

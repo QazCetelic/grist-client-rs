@@ -50,10 +50,7 @@ pub enum ModifyOrgAccessError {
 
 
 pub async fn delete_org(configuration: &configuration::Configuration, org_id: &str) -> Result<(), Error<DeleteOrgError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_org_id = org_id;
-
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=p_org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -78,10 +75,7 @@ pub async fn delete_org(configuration: &configuration::Configuration, org_id: &s
 }
 
 pub async fn describe_org(configuration: &configuration::Configuration, org_id: &str) -> Result<models::Org, Error<DescribeOrgError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_org_id = org_id;
-
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=p_org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -117,10 +111,7 @@ pub async fn describe_org(configuration: &configuration::Configuration, org_id: 
 }
 
 pub async fn list_org_access(configuration: &configuration::Configuration, org_id: &str) -> Result<models::OrgAccessRead, Error<ListOrgAccessError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_org_id = org_id;
-
-    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=p_org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -156,8 +147,7 @@ pub async fn list_org_access(configuration: &configuration::Configuration, org_i
 }
 
 /// This enumerates all the team sites or personal areas available.
-pub async fn list_orgs(configuration: &configuration::Configuration, ) -> Result<Vec<models::Org>, Error<ListOrgsError>> {
-
+pub async fn list_orgs(configuration: &configuration::Configuration) -> Result<Vec<models::Org>, Error<ListOrgsError>> {
     let uri_str = format!("{}/orgs", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
@@ -194,11 +184,7 @@ pub async fn list_orgs(configuration: &configuration::Configuration, ) -> Result
 }
 
 pub async fn modify_org(configuration: &configuration::Configuration, org_id: &str, org_parameters: models::OrgParameters) -> Result<(), Error<ModifyOrgError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_org_id = org_id;
-    let p_org_parameters = org_parameters;
-
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=p_org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -207,7 +193,7 @@ pub async fn modify_org(configuration: &configuration::Configuration, org_id: &s
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_org_parameters);
+    req_builder = req_builder.json(&org_parameters);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -224,11 +210,7 @@ pub async fn modify_org(configuration: &configuration::Configuration, org_id: &s
 }
 
 pub async fn modify_org_access(configuration: &configuration::Configuration, org_id: &str, modify_org_access_request: models::ModifyOrgAccessRequest) -> Result<(), Error<ModifyOrgAccessError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_org_id = org_id;
-    let p_modify_org_access_request = modify_org_access_request;
-
-    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=p_org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -237,7 +219,7 @@ pub async fn modify_org_access(configuration: &configuration::Configuration, org
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_modify_org_access_request);
+    req_builder = req_builder.json(&modify_org_access_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

@@ -41,10 +41,7 @@ pub enum DocsDocIdWebhooksWebhookIdPatchError {
 
 
 pub async fn docs_doc_id_webhooks_get(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocsDocIdWebhooksGet200Response, Error<DocsDocIdWebhooksGetError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/webhooks", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{}/docs/{docId}/webhooks", configuration.base_path, docId=crate::apis::urlencode(doc_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -69,8 +66,8 @@ pub async fn docs_doc_id_webhooks_get(configuration: &configuration::Configurati
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksGet200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksGet200Response`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksGet200Response`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksGet200Response`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -80,11 +77,7 @@ pub async fn docs_doc_id_webhooks_get(configuration: &configuration::Configurati
 }
 
 pub async fn docs_doc_id_webhooks_post(configuration: &configuration::Configuration, doc_id: &str, docs_doc_id_webhooks_post_request: Option<models::DocsDocIdWebhooksPostRequest>) -> Result<models::DocsDocIdWebhooksPost200Response, Error<DocsDocIdWebhooksPostError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_docs_doc_id_webhooks_post_request = docs_doc_id_webhooks_post_request;
-
-    let uri_str = format!("{}/docs/{docId}/webhooks", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{}/docs/{docId}/webhooks", configuration.base_path, docId=crate::apis::urlencode(doc_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -93,7 +86,7 @@ pub async fn docs_doc_id_webhooks_post(configuration: &configuration::Configurat
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_docs_doc_id_webhooks_post_request);
+    req_builder = req_builder.json(&docs_doc_id_webhooks_post_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -110,8 +103,8 @@ pub async fn docs_doc_id_webhooks_post(configuration: &configuration::Configurat
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksPost200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksPost200Response`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksPost200Response`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksPost200Response`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -121,10 +114,7 @@ pub async fn docs_doc_id_webhooks_post(configuration: &configuration::Configurat
 }
 
 pub async fn docs_doc_id_webhooks_queue_delete(configuration: &configuration::Configuration, doc_id: &str) -> Result<(), Error<DocsDocIdWebhooksQueueDeleteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-
-    let uri_str = format!("{}/docs/{docId}/webhooks/queue", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
+    let uri_str = format!("{}/docs/{docId}/webhooks/queue", configuration.base_path, docId=crate::apis::urlencode(doc_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -149,11 +139,7 @@ pub async fn docs_doc_id_webhooks_queue_delete(configuration: &configuration::Co
 }
 
 pub async fn docs_doc_id_webhooks_webhook_id_delete(configuration: &configuration::Configuration, doc_id: &str, webhook_id: &str) -> Result<models::DocsDocIdWebhooksWebhookIdDelete200Response, Error<DocsDocIdWebhooksWebhookIdDeleteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_webhook_id = webhook_id;
-
-    let uri_str = format!("{}/docs/{docId}/webhooks/{webhookId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), webhookId=crate::apis::urlencode(p_webhook_id));
+    let uri_str = format!("{}/docs/{docId}/webhooks/{webhookId}", configuration.base_path, docId=crate::apis::urlencode(doc_id), webhookId=crate::apis::urlencode(webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -178,8 +164,8 @@ pub async fn docs_doc_id_webhooks_webhook_id_delete(configuration: &configuratio
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksWebhookIdDelete200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksWebhookIdDelete200Response`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocsDocIdWebhooksWebhookIdDelete200Response`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocsDocIdWebhooksWebhookIdDelete200Response`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -189,12 +175,7 @@ pub async fn docs_doc_id_webhooks_webhook_id_delete(configuration: &configuratio
 }
 
 pub async fn docs_doc_id_webhooks_webhook_id_patch(configuration: &configuration::Configuration, doc_id: &str, webhook_id: &str, webhook_partial_fields: Option<models::WebhookPartialFields>) -> Result<(), Error<DocsDocIdWebhooksWebhookIdPatchError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_doc_id = doc_id;
-    let p_webhook_id = webhook_id;
-    let p_webhook_partial_fields = webhook_partial_fields;
-
-    let uri_str = format!("{}/docs/{docId}/webhooks/{webhookId}", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), webhookId=crate::apis::urlencode(p_webhook_id));
+    let uri_str = format!("{}/docs/{docId}/webhooks/{webhookId}", configuration.base_path, docId=crate::apis::urlencode(doc_id), webhookId=crate::apis::urlencode(webhook_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -203,7 +184,7 @@ pub async fn docs_doc_id_webhooks_webhook_id_patch(configuration: &configuration
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_webhook_partial_fields);
+    req_builder = req_builder.json(&webhook_partial_fields);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

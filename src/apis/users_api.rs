@@ -16,12 +16,8 @@ pub enum UsersUserIdDeleteError {
 
 
 /// This action also deletes the user's personal organisation and all the workspaces and documents it contains. Currently, only the users themselves are allowed to delete their own accounts.  ⚠️ **This action cannot be undone, please be cautious when using this endpoint** ⚠️ 
-pub async fn users_user_id_delete(configuration: &configuration::Configuration, user_id: i32, users_user_id_delete_request: Option<models::UsersUserIdDeleteRequest>) -> Result<(), Error<UsersUserIdDeleteError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_user_id = user_id;
-    let p_users_user_id_delete_request = users_user_id_delete_request;
-
-    let uri_str = format!("{}/users/{userId}", configuration.base_path, userId=p_user_id);
+pub async fn users_user_id_delete(configuration: &configuration::Configuration, user_id: u64, users_user_id_delete_request: Option<models::UsersUserIdDeleteRequest>) -> Result<(), Error<UsersUserIdDeleteError>> {
+    let uri_str = format!("{}/users/{userId}", configuration.base_path, userId=user_id);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -30,7 +26,7 @@ pub async fn users_user_id_delete(configuration: &configuration::Configuration, 
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_users_user_id_delete_request);
+    req_builder = req_builder.json(&users_user_id_delete_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
