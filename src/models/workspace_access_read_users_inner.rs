@@ -1,10 +1,11 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristId;
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WorkspaceAccessReadUsersInner {
     #[serde(rename = "id")]
-    pub id: i32,
+    pub id: GristId,
     #[serde(rename = "name")]
     pub name: String,
     #[serde(rename = "email", skip_serializing_if = "Option::is_none")]
@@ -16,7 +17,7 @@ pub struct WorkspaceAccessReadUsersInner {
 }
 
 impl WorkspaceAccessReadUsersInner {
-    pub fn new(id: i32, name: String) -> WorkspaceAccessReadUsersInner {
+    pub fn new(id: GristId, name: String) -> WorkspaceAccessReadUsersInner {
         WorkspaceAccessReadUsersInner {
             id,
             name,

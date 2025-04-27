@@ -161,5 +161,6 @@ pub use self::workspace_with_docs_and_domain::WorkspaceWithDocsAndDomain;
 pub mod workspace_with_docs_and_org;
 pub use self::workspace_with_docs_and_org::WorkspaceWithDocsAndOrg;
 pub mod workspace_with_org;
+mod primitive_types;
 
 pub use self::workspace_with_org::WorkspaceWithOrg;

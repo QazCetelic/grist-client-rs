@@ -1,5 +1,6 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristId;
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateFields {
@@ -26,7 +27,7 @@ pub struct CreateFields {
     pub recalc_when: Option<i32>,
     /// For Ref and RefList columns, the colRef of a column to display
     #[serde(rename = "visibleCol", skip_serializing_if = "Option::is_none")]
-    pub visible_col: Option<i32>,
+    pub visible_col: Option<GristId>,
     /// An encoded array of column identifiers (colRefs) that this column depends on. If any of these columns change, the column will be recalculated. E.g.: <code>[2, 3]</code>
     #[serde(rename = "recalcDeps", skip_serializing_if = "Option::is_none")]
     pub recalc_deps: Option<String>,

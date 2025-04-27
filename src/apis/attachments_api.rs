@@ -81,35 +81,6 @@ pub enum UploadMissingAttachmentsError {
     UnknownValue(serde_json::Value),
 }
 
-
-// pub async fn download_attachment(configuration: &configuration::Configuration, doc_id: &str, attachment_id: f64) -> Result<(), Error<DownloadAttachmentError>> {
-//     // add a prefix to parameters to efficiently prevent name collisions
-//     let p_doc_id = doc_id;
-//     let p_attachment_id = attachment_id;
-//
-//     let uri_str = format!("{}/docs/{docId}/attachments/{attachmentId}/download", configuration.base_path, docId=crate::apis::urlencode(p_doc_id), attachmentId=p_attachment_id);
-//     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
-//
-//     if let Some(ref user_agent) = configuration.user_agent {
-//         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
-//     }
-//     if let Some(ref token) = configuration.bearer_access_token {
-//         req_builder = req_builder.bearer_auth(token.to_owned());
-//     };
-//
-//     let req = req_builder.build()?;
-//     let resp = configuration.client.execute(req).await?;
-//
-//     let status = resp.status();
-//
-//     if !status.is_client_error() && !status.is_server_error() {
-//         Ok(())
-//     } else {
-//         let content = resp.text().await?;
-//         let entity: Option<DownloadAttachmentError> = serde_json::from_str(&content).ok();
-//         Err(Error::ResponseError(ResponseContent { status, content, entity }))
-//     }
-// }
 pub async fn download_attachment(configuration: &configuration::Configuration, doc_id: &str, attachment_id: u64) -> Result<Vec<u8>, Error<DownloadAttachmentError>> {
     // Add a prefix to parameters to efficiently prevent name collisions
     let p_doc_id = doc_id;

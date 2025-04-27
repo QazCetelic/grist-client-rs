@@ -1,5 +1,6 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristDuration;
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DocsDocIdSqlPostRequest {
@@ -11,7 +12,7 @@ pub struct DocsDocIdSqlPostRequest {
     pub args: Option<Vec<models::DocsDocIdSqlPostRequestArgsInner>>,
     /// Timeout after which operations on the document will be interrupted. Specified in milliseconds. Defaults to 1000 (1 second). This default is controlled by an optional environment variable read by the Grist app, GRIST_SQL_TIMEOUT_MSEC. The default cannot be exceeded, only reduced.
     #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-    pub timeout: Option<usize>,
+    pub timeout: Option<GristDuration>,
 }
 
 impl DocsDocIdSqlPostRequest {

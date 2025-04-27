@@ -1,10 +1,11 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristId;
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WorkspaceWithDocsAndDomain {
     #[serde(rename = "id")]
-    pub id: i64,
+    pub id: GristId,
     #[serde(rename = "name")]
     pub name: String,
     #[serde(rename = "access")]
@@ -16,7 +17,7 @@ pub struct WorkspaceWithDocsAndDomain {
 }
 
 impl WorkspaceWithDocsAndDomain {
-    pub fn new(id: i64, name: String, access: models::Access, docs: Vec<models::Doc>) -> WorkspaceWithDocsAndDomain {
+    pub fn new(id: GristId, name: String, access: models::Access, docs: Vec<models::Doc>) -> WorkspaceWithDocsAndDomain {
         WorkspaceWithDocsAndDomain {
             id,
             name,

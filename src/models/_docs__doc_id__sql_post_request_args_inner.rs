@@ -1,10 +1,11 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristId;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DocsDocIdSqlPostRequestArgsInner {
-    Number(usize),
+    Number(GristId),
     String(String),
 }
 

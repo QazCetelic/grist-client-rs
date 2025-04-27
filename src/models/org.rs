@@ -1,10 +1,11 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
+use crate::models::primitive_types::GristId;
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Org {
     #[serde(rename = "id")]
-    pub id: i64,
+    pub id: GristId,
     #[serde(rename = "name")]
     pub name: String,
     #[serde(rename = "domain", deserialize_with = "Option::deserialize")]
@@ -21,7 +22,7 @@ pub struct Org {
 }
 
 impl Org {
-    pub fn new(id: i64, name: String, domain: Option<String>, owner: models::User, access: models::Access, created_at: String, updated_at: String) -> Org {
+    pub fn new(id: GristId, name: String, domain: Option<String>, owner: models::User, access: models::Access, created_at: String, updated_at: String) -> Org {
         Org {
             id,
             name,
