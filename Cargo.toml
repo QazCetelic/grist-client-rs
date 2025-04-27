@@ -5,6 +5,10 @@ authors = ["QazCetelic"]
 description = "An API for manipulating Grist sites, workspaces, and documents."
 license = "LGPL"
 edition = "2021"
+repository = "https://github.com/QazCetelic/grist-client-rs"
+readme = "README.md"
+keywords = ["grist", "client"]
+exclude = ["/.github", ".openapi-generator-ignore", "generate.sh"]
 
 [dependencies]
 serde = { version = "^1.0", features = ["derive"] }
