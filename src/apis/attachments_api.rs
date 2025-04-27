@@ -181,8 +181,8 @@ pub async fn get_attachment_metadata(configuration: &configuration::Configuratio
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentMetadata`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentMetadata`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentMetadata`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentMetadata`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -220,8 +220,8 @@ pub async fn get_attachment_transfer_status(configuration: &configuration::Confi
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentsTransferStatus`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentsTransferStatus`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentsTransferStatus`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentsTransferStatus`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -259,8 +259,8 @@ pub async fn get_document_attachment_store(configuration: &configuration::Config
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocumentStoreSetting`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocumentStoreSetting`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocumentStoreSetting`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocumentStoreSetting`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -298,8 +298,8 @@ pub async fn list_attachment_stores(configuration: &configuration::Configuration
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocumentStoreSetting`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocumentStoreSetting`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::DocumentStoreSetting`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::DocumentStoreSetting`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -357,8 +357,8 @@ pub async fn list_attachments(configuration: &configuration::Configuration, doc_
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentMetadataList`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentMetadataList`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentMetadataList`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentMetadataList`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -398,8 +398,8 @@ pub async fn set_document_attachment_store(configuration: &configuration::Config
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::SetDocumentAttachmentStore200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::SetDocumentAttachmentStore200Response`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::SetDocumentAttachmentStore200Response`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::SetDocumentAttachmentStore200Response`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -437,8 +437,8 @@ pub async fn start_attachment_transfer(configuration: &configuration::Configurat
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentsTransferStatus`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentsTransferStatus`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AttachmentsTransferStatus`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::AttachmentsTransferStatus`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -447,11 +447,7 @@ pub async fn start_attachment_transfer(configuration: &configuration::Configurat
     }
 }
 
-pub async fn upload_attachments(
-    configuration: &configuration::Configuration,
-    doc_id: &str,
-    upload: Vec<std::path::PathBuf>,
-) -> Result<Vec<u64>, Error<UploadAttachmentsError>> {
+pub async fn upload_attachments(configuration: &configuration::Configuration, doc_id: &str, upload: Vec<std::path::PathBuf>) -> Result<Vec<u64>, Error<UploadAttachmentsError>> {
     // Add a prefix to parameters to efficiently prevent name collisions
     let p_doc_id = doc_id;
     let p_upload = upload;
@@ -472,7 +468,6 @@ pub async fn upload_attachments(
 
     let mut multipart_form = reqwest::multipart::Form::new();
 
-    // Support file upload for 'upload' parameter
     for path in p_upload {
         let file_name = path.file_name()
             .and_then(|os_str| os_str.to_str())
@@ -500,14 +495,8 @@ pub async fn upload_attachments(
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text =>
-                return Err(Error::from(serde_json::Error::custom(
-                    "Received `text/plain` content type response that cannot be converted to `Vec<i32>`")),
-                ),
-            ContentType::Unsupported(unknown_type) =>
-                return Err(Error::from(serde_json::Error::custom(format!(
-                    "Received `{unknown_type}` content type response that cannot be converted to `Vec<i32>`")),
-                )),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `Vec<i32>`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `Vec<i32>`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -520,7 +509,6 @@ pub async fn upload_attachments(
 pub async fn upload_missing_attachments(configuration: &configuration::Configuration, doc_id: &str, file: Option<std::path::PathBuf>) -> Result<models::UploadMissingAttachments200Response, Error<UploadMissingAttachmentsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_doc_id = doc_id;
-    let p_file = file;
 
     let uri_str = format!("{}/docs/{docId}/attachments/archive", configuration.base_path, docId=crate::apis::urlencode(p_doc_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -532,7 +520,18 @@ pub async fn upload_missing_attachments(configuration: &configuration::Configura
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
     let mut multipart_form = reqwest::multipart::Form::new();
-    // TODO: support file upload for 'file' parameter
+
+    if let Some(path) = file {
+        let file_name = path.file_name()
+            .and_then(|os_str| os_str.to_str())
+            .expect("Failed to get file name")
+            .to_owned();
+
+        // Add the file to the multipart form
+        let file_part = reqwest::multipart::Part::file(path).await.expect("Failed to load file into multipart").file_name(file_name);
+        multipart_form = multipart_form.part("upload", file_part);
+    }
+    
     req_builder = req_builder.multipart(multipart_form);
 
     let req = req_builder.build()?;
@@ -550,8 +549,8 @@ pub async fn upload_missing_attachments(configuration: &configuration::Configura
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::UploadMissingAttachments200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::UploadMissingAttachments200Response`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::UploadMissingAttachments200Response`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::UploadMissingAttachments200Response`")))),
         }
     } else {
         let content = resp.text().await?;
