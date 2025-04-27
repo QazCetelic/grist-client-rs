@@ -41,8 +41,8 @@ pub enum ReplaceColumnsError {
 
 
 pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, create_columns: models::CreateColumns) -> Result<models::ColumnsWithoutFields, Error<AddColumnsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/columns",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );
@@ -82,8 +82,8 @@ pub async fn add_columns(configuration: &configuration::Configuration, doc_id: &
 }
 
 pub async fn delete_column(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, col_id: &str) -> Result<(), Error<DeleteColumnError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns/{colId}",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/columns/{colId}",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id),
         colId = crate::apis::urlencode(col_id)
@@ -112,8 +112,8 @@ pub async fn delete_column(configuration: &configuration::Configuration, doc_id:
 }
 
 pub async fn list_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, hidden: Option<bool>) -> Result<models::ColumnsList, Error<ListColumnsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/columns",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );
@@ -155,8 +155,8 @@ pub async fn list_columns(configuration: &configuration::Configuration, doc_id: 
 }
 
 pub async fn modify_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, update_columns: models::UpdateColumns) -> Result<(), Error<ModifyColumnsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/columns",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );
@@ -185,8 +185,8 @@ pub async fn modify_columns(configuration: &configuration::Configuration, doc_id
 }
 
 pub async fn replace_columns(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, update_columns: models::UpdateColumns, noadd: Option<bool>, noupdate: Option<bool>, replaceall: Option<bool>) -> Result<(), Error<ReplaceColumnsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/columns",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/columns",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );

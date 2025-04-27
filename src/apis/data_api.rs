@@ -35,8 +35,8 @@ pub enum ModifyRowsError {
 
 /// Deprecated in favor of `records` endpoints. We have no immediate plans to remove these endpoints, but consider `records` a better starting point for new projects.
 pub async fn add_rows(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, request_body: std::collections::HashMap<String, Vec<serde_json::Value>>, noparse: Option<bool>) -> Result<Vec<i32>, Error<AddRowsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/data",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/data",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );
@@ -79,8 +79,8 @@ pub async fn add_rows(configuration: &configuration::Configuration, doc_id: &str
 }
 
 pub async fn delete_rows(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, request_body: Vec<i32>) -> Result<(), Error<DeleteRowsError>> {
-    let uri_str = format!("{config}/docs/{docId}/tables/{tableId}/data/delete",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/data/delete",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id),
         tableId = crate::apis::urlencode(table_id)
     );
@@ -110,7 +110,7 @@ pub async fn delete_rows(configuration: &configuration::Configuration, doc_id: &
 
 /// Deprecated in favor of `records` endpoints. We have no immediate plans to remove these endpoints, but consider `records` a better starting point for new projects.
 pub async fn get_table_data(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, filter: Option<&str>, sort: Option<&str>, limit: Option<f64>, x_sort: Option<&str>, x_limit: Option<f64>) -> Result<models::Data, Error<GetTableDataError>> {
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/data", configuration.base_path, docId=crate::apis::urlencode(doc_id), tableId=crate::apis::urlencode(table_id));
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/data", base_path = configuration.base_path, docId=crate::apis::urlencode(doc_id), tableId=crate::apis::urlencode(table_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref param_value) = filter {
@@ -162,7 +162,7 @@ pub async fn get_table_data(configuration: &configuration::Configuration, doc_id
 
 /// Deprecated in favor of `records` endpoints. We have no immediate plans to remove these endpoints, but consider `records` a better starting point for new projects.
 pub async fn modify_rows(configuration: &configuration::Configuration, doc_id: &str, table_id: &str, data: models::Data, noparse: Option<bool>) -> Result<Vec<i32>, Error<ModifyRowsError>> {
-    let uri_str = format!("{}/docs/{docId}/tables/{tableId}/data", configuration.base_path, docId=crate::apis::urlencode(doc_id), tableId=crate::apis::urlencode(table_id));
+    let uri_str = format!("{base_path}/docs/{docId}/tables/{tableId}/data", base_path = configuration.base_path, docId=crate::apis::urlencode(doc_id), tableId=crate::apis::urlencode(table_id));
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref param_value) = noparse {

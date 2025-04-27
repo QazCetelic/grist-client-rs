@@ -210,7 +210,7 @@ pub async fn modify_org(configuration: &configuration::Configuration, org_id: &s
 }
 
 pub async fn modify_org_access(configuration: &configuration::Configuration, org_id: &str, modify_org_access_request: models::ModifyOrgAccessRequest) -> Result<(), Error<ModifyOrgAccessError>> {
-    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{base_path}/orgs/{orgId}/access", base_path = configuration.base_path, orgId=org_id.to_string());
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

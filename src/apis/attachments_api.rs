@@ -83,8 +83,8 @@ pub enum UploadMissingAttachmentsError {
 
 pub async fn download_attachment(configuration: &configuration::Configuration, doc_id: &str, attachment_id: u64) -> Result<Vec<u8>, Error<DownloadAttachmentError>> {
     // Construct the URI string for the request
-    let uri_str = format!("{config}/docs/{docId}/attachments/{attachmentId}/download",
-        config = configuration.base_path, 
+    let uri_str = format!("{base_path}/docs/{docId}/attachments/{attachmentId}/download",
+        base_path = configuration.base_path, 
         docId = crate::apis::urlencode(doc_id),
         attachmentId = attachment_id
     );
@@ -188,8 +188,8 @@ pub async fn get_attachment_metadata(configuration: &configuration::Configuratio
 }
 
 pub async fn get_attachment_transfer_status(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::AttachmentsTransferStatus, Error<GetAttachmentTransferStatusError>> {
-    let uri_str = format!("{config}/api/docs/{docId}/attachments/transferStatus",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/api/docs/{docId}/attachments/transferStatus",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -227,8 +227,8 @@ pub async fn get_attachment_transfer_status(configuration: &configuration::Confi
 }
 
 pub async fn get_document_attachment_store(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocumentStoreSetting, Error<GetDocumentAttachmentStoreError>> {
-    let uri_str = format!("{config}/docs/{docId}/attachments/store",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/attachments/store",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -266,8 +266,8 @@ pub async fn get_document_attachment_store(configuration: &configuration::Config
 }
 
 pub async fn list_attachment_stores(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::DocumentStoreSetting, Error<ListAttachmentStoresError>> {
-    let uri_str = format!("{config}/docs/{docId}/attachments/stores",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/attachments/stores",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -305,8 +305,8 @@ pub async fn list_attachment_stores(configuration: &configuration::Configuration
 }
 
 pub async fn list_attachments(configuration: &configuration::Configuration, doc_id: &str, filter: Option<&str>, sort: Option<&str>, limit: Option<f64>, x_sort: Option<&str>, x_limit: Option<f64>) -> Result<models::AttachmentMetadataList, Error<ListAttachmentsError>> {
-    let uri_str = format!("{config}/docs/{docId}/attachments",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/attachments",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
@@ -359,8 +359,8 @@ pub async fn list_attachments(configuration: &configuration::Configuration, doc_
 }
 
 pub async fn set_document_attachment_store(configuration: &configuration::Configuration, doc_id: &str, document_store_setting: Option<models::DocumentStoreSetting>) -> Result<models::SetDocumentAttachmentStore200Response, Error<SetDocumentAttachmentStoreError>> {
-    let uri_str = format!("{config}/docs/{docId}/attachments/store",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/docs/{docId}/attachments/store",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -399,8 +399,8 @@ pub async fn set_document_attachment_store(configuration: &configuration::Config
 }
 
 pub async fn start_attachment_transfer(configuration: &configuration::Configuration, doc_id: &str) -> Result<models::AttachmentsTransferStatus, Error<StartAttachmentTransferError>> {
-    let uri_str = format!("{config}/api/docs/{docId}/attachments/transferAll",
-        config = configuration.base_path,
+    let uri_str = format!("{base_path}/api/docs/{docId}/attachments/transferAll",
+        base_path = configuration.base_path,
         docId = crate::apis::urlencode(doc_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
