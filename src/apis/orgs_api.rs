@@ -50,7 +50,7 @@ pub enum ModifyOrgAccessError {
 
 
 pub async fn delete_org(configuration: &configuration::Configuration, org_id: &str) -> Result<(), Error<DeleteOrgError>> {
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -75,7 +75,7 @@ pub async fn delete_org(configuration: &configuration::Configuration, org_id: &s
 }
 
 pub async fn describe_org(configuration: &configuration::Configuration, org_id: &str) -> Result<models::Org, Error<DescribeOrgError>> {
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -100,8 +100,8 @@ pub async fn describe_org(configuration: &configuration::Configuration, org_id: 
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::Org`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::Org`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::Org`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::Org`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -111,7 +111,7 @@ pub async fn describe_org(configuration: &configuration::Configuration, org_id: 
 }
 
 pub async fn list_org_access(configuration: &configuration::Configuration, org_id: &str) -> Result<models::OrgAccessRead, Error<ListOrgAccessError>> {
-    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}/access", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -136,8 +136,8 @@ pub async fn list_org_access(configuration: &configuration::Configuration, org_i
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::OrgAccessRead`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::OrgAccessRead`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::OrgAccessRead`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::OrgAccessRead`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -173,8 +173,8 @@ pub async fn list_orgs(configuration: &configuration::Configuration) -> Result<V
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `Vec&lt;models::Org&gt;`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `Vec&lt;models::Org&gt;`")))),
+            ContentType::Text => Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `Vec&lt;models::Org&gt;`"))),
+            ContentType::Unsupported(unknown_type) => Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `Vec&lt;models::Org&gt;`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -184,7 +184,7 @@ pub async fn list_orgs(configuration: &configuration::Configuration) -> Result<V
 }
 
 pub async fn modify_org(configuration: &configuration::Configuration, org_id: &str, org_parameters: models::OrgParameters) -> Result<(), Error<ModifyOrgError>> {
-    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -210,7 +210,7 @@ pub async fn modify_org(configuration: &configuration::Configuration, org_id: &s
 }
 
 pub async fn modify_org_access(configuration: &configuration::Configuration, org_id: &str, modify_org_access_request: models::ModifyOrgAccessRequest) -> Result<(), Error<ModifyOrgAccessError>> {
-    let uri_str = format!("{base_path}/orgs/{orgId}/access", base_path = configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{base_path}/orgs/{orgId}/access", base_path = configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {

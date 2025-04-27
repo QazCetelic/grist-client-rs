@@ -125,10 +125,10 @@ pub async fn get_table_data(configuration: &configuration::Configuration, doc_id
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(param_value) = sort {
+    if let Some(param_value) = x_sort {
         req_builder = req_builder.header("X-Sort", param_value.to_string());
     }
-    if let Some(param_value) = limit {
+    if let Some(param_value) = x_limit {
         req_builder = req_builder.header("X-Limit", param_value.to_string());
     }
     if let Some(ref token) = configuration.bearer_access_token {

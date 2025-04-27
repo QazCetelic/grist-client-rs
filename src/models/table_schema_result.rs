@@ -38,7 +38,7 @@ impl TableSchemaResult {
         }
     }
 }
-/// 
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Format {
     #[serde(rename = "csv")]
@@ -50,7 +50,7 @@ impl Default for Format {
         Self::Csv
     }
 }
-/// 
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Mediatype {
     #[serde(rename = "text/csv")]
@@ -62,7 +62,7 @@ impl Default for Mediatype {
         Self::TextSlashCsv
     }
 }
-/// 
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Encoding {
     #[serde(rename = "utf-8")]

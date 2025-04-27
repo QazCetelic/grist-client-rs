@@ -55,7 +55,7 @@ pub enum ModifyWorkspaceAccessError {
 
 
 pub async fn create_workspace(configuration: &configuration::Configuration, org_id: &str, workspace_parameters: models::WorkspaceParameters) -> Result<i32, Error<CreateWorkspaceError>> {
-    let uri_str = format!("{}/orgs/{orgId}/workspaces", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}/workspaces", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -189,7 +189,7 @@ pub async fn list_workspace_access(configuration: &configuration::Configuration,
 }
 
 pub async fn list_workspaces(configuration: &configuration::Configuration, org_id: &str) -> Result<Vec<models::WorkspaceWithDocsAndDomain>, Error<ListWorkspacesError>> {
-    let uri_str = format!("{}/orgs/{orgId}/workspaces", configuration.base_path, orgId=org_id.to_string());
+    let uri_str = format!("{}/orgs/{orgId}/workspaces", configuration.base_path, orgId=org_id);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
