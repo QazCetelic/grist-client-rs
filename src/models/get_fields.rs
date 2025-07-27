@@ -105,7 +105,7 @@ impl<'de> Deserialize<'de> for Type {
             v if v.starts_with("RefList:") => Ok(Type::RefList),
             "Attachments" => Ok(Type::Attachments),
             "ManualSortPos" => Ok(Type::ManualSortPos),
-            _ => Err(serde::de::Error::custom(format!("Unknown type: {}", value))),
+            _ => Err(serde::de::Error::custom(format!("Unknown type: {value}"))),
         }
     }
 }
